@@ -1,0 +1,110 @@
+{% extends "layout.html.twig" %}
+    {% block  content %}
+
+        <!-- Testimonials header -->
+        <section class="row" id="tmServices">
+          <div class="col-12">
+            <div class="parallax-window tm-services-parallax-header tm-testimonials-parallax-header"
+                 data-parallax="scroll"
+                 data-z-index="101"
+                 data-image-src="img/people.jpg">
+
+                 <div class="tm-bg-black-transparent text-center tm-services-header tm-testimonials-header">
+                    <h2 class="text-uppercase tm-services-page-title tm-testimonials-page-title">Login</h2>
+                    <p class="tm-services-description mb-0 small">
+                        Parallax movement background page "people" for contact page
+                    </p>
+                </div>
+            </div>
+          </div>   
+        </section>
+
+ <form text-align="center" action="/recibecontroller" method="post" >
+            <!-- Username -->
+            <input name="cc" type="text">
+            <input type="submit" name="enviar"><br>
+            <!-- Password -->
+            <label for="username">Password:</label>
+           <br>
+            <input type="password">
+            <div id="lower">
+                <input type="checkbox"><label class="check" for="checkbox">Keep me logged in</label>
+                <!-- Submit Button -->
+                <input type="submit" value="Login">
+            </div>
+        </form>
+
+
+      </div>
+      <!-- .container-fluid -->
+    </div>
+
+    <script src="js/jquery.min.js"></script>
+    <script src="js/parallax.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="slick/slick.min.js"></script>
+    <script>
+        $(function(){
+            $('.tabgroup > div').hide();
+            $('.tabgroup > div:first-of-type').show();  
+            $('.tabs a').click(function(e){
+              e.preventDefault();
+              var $this = $(this),
+                  tabgroup = '#'+$this.parents('.tabs').data('tabgroup'),
+                  others = $this.closest('li').siblings().children('a'),
+                  target = $this.attr('href');
+              others.removeClass('active');
+              $this.addClass('active');
+              $(tabgroup).children('div').hide();
+              $(target).show();
+
+              // Scroll to tab content (for mobile)
+              if($(window).width() < 992) {
+                  $('html, body').animate({
+                      scrollTop: $("#first-tab-group").offset().top
+                  }, 200);    
+              }              
+            })
+
+            $('.tm-carousel').slick({
+                dots: true,
+                  infinite: false,
+                  arrows: false,
+                  speed: 300,
+                  slidesToShow: 3,
+                  slidesToScroll: 2,
+                  responsive: [
+                    {
+                      breakpoint: 1024,
+                      settings: {
+                          arrows: false,
+                        slidesToShow: 2,
+                        slidesToScroll: 1,
+                        infinite: true,
+                        dots: true
+                      }
+                    },
+                    {
+                      breakpoint: 600,
+                      settings: {
+                          arrows: false,
+                        slidesToShow: 1,
+                        slidesToScroll: 1
+                      }
+                    },
+                    {
+                      breakpoint: 480,
+                      settings: {
+                          arrows: false,
+                        slidesToShow: 1,
+                        slidesToScroll: 1
+                      }
+                    }
+                    // You can unslick at a given breakpoint now by adding:
+                    // settings: "unslick"
+                    // instead of a settings object
+                  ]
+            });  
+        });
+    </script>
+{% endblock %}

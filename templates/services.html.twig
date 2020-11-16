@@ -1,0 +1,134 @@
+{% extends "layout.html.twig" %}
+    {% block  content %}              
+        <!-- Services header -->
+        <section class="row" id="tmServices">
+          <div class="col-12">
+            <div class="parallax-window tm-services-parallax-header"
+                 data-parallax="scroll"
+                 data-z-index="101"
+                 data-image-src="img/coffee-glass.jpg">
+
+                 <div class="tm-bg-black-transparent text-center tm-services-header">
+                    <h2 class="text-uppercase tm-services-page-title">Nuestros servicios</h2>
+{#                     <p class="tm-services-description mb-0 small">
+                        This is a parallax movement background image "coffee glass". <br>
+                        Aliquam egestas lectus semper enim malesuada, in convallis nunc sagittis.<br>
+                        Pellentesque quis tellus vel tortor malesuada egestas.    
+                    </p> #}
+                </div>
+            </div>
+          </div> 
+          <div class="tm-paging-links">
+            <nav>
+                    {% set currentDish = app.request.attributes.get("dish") %}
+                    <li class="tm-paging-item"><a href="{{ path('servicios',{ dish : 'Productos1-3'}) }}" class="tm-paging-link{{
+                        currentDish=='Productos1-3' ? ' active' : '' }}"> Pagina 1</a></li>
+                    <li class="tm-paging-item"><a href="{{ path('servicios',{ dish : 'Productos4-6'}) }}" class="tm-paging-link{{
+                        currentDish=='Productos4-6' ? ' active' : '' }}">Pagina 2</a></li>
+                    <li class="tm-paging-item"><a href="{{ path('servicios',{ dish : 'Productos7-9'}) }}" class="tm-paging-link{{
+                        currentDish=='Producto7-9' ? ' active' : '' }}">Pagina 3</a></li>
+            </nav>
+            </div>
+          <div class="rowtm-gallery">
+            <div id="tm-gallery-page" class="tm-gallery-page">
+                {% set lowerLimit = (currentPage - 1) * itemsPerPage %}
+                {% set upperLimit = (currentPage * itemsPerPage + 1) %}
+                {% for dishes in data %}
+                    {% if loop.index > lowerLimit and loop.index < upperLimit %}
+                <div class="tm-tab-contents">
+                    <div id="first-tab-group" class="tabgroup">
+                        <div id="tab1">                            
+                            <div class="text-content">
+                                <h3 class="tm-service-tab-title">{{ dishes.getNombreProducto | upper }}</h3>
+                                <p class="tm-service-tab-p">{{ dishes.getDescripcion }}
+                                </p>                            
+                                <p class="mb-0">{{ dishes.getPrecio }}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {% endif %}
+                {% endfor %}
+                
+                {% set lastPage = (((data|length)/itemsPerPage)|round(0, 'ceil')) %}
+                {% set remainder = ((((data|length)/itemsPerPage)|round(0, 'ceil'))*itemsPerPage-(data|length)) %}
+                {% set lastPage = currentPage and remainder != 0 %}
+
+                    {% for dummyDishes in 1..remainder %}
+                         <article class="col-lg-3 col-md-4 col-sm-6 col-12 tm-gallery-item">
+                            <figure>
+                                <figcaption>
+                                    <h4 class="tm-gallery-title">&nbsp</h4>
+                                    <p class="tm-gallery-description">&nbsp</p>
+                                    <p class="tm-gallery-price">&nbsp</p>
+                                </figcaption>
+                            </figure>
+                        </article>
+                    {% endfor %}
+            </div>
+        </div>
+        <div class="tm-paging-links">
+            <nav>
+                <ul>
+                    {% for paginator in 1..lastPage %}
+                    <li class="tm-paging-item"><a href="{{ path('servicios',{dish : currentDish, currººentPage : paginator })}}"
+                    class="tm-paging-link{{ currentPage == paginator ? ' active' : '' }}">{{ paginator }}</li>
+                    {% endfor %}
+                </ul>
+            </nav>
+        </div>
+
+
+
+
+          <div class="col-12">
+            <div class="tm-bg-black-transparent tm-services-detail-box">
+                <p>
+                    Aenean convallis justo purus, id pulvinar enim finibus vitae. Fusce et bibendum nisi, vitae mollis turpis. Aliquam tellus mi, maximus vel orci
+                    imperdiet, convallis cursus tortor. Donec sollicitudin metus sit amet nisl rhoncus, id ultrices risus interdum. Proin mollis nulla nulla, ac cursus enim ornare a. Cras quis porta lectus. Pellentesque eu ultrices arcu. Proin ac tristique dui. Praesent mi odio, aliquam ac leo sit amet, dictum sodales diam.
+                </p>
+                <p>
+                    Quisque commodo, orci eget suscipit vestibulum, metus orci fringilla urna, eget dignissim justo odio sit amet tellus. Morbi dapibus molestie 
+                    massa nec congue. Etiam lacinia pretium psuere. Integer sodales porttitor lobortis. Nam vestibulum vestibulum lectus non pulvinar.
+                    Vivamus eget sapien vitae magna lobortis rhoncus molestie sit amet est. Fusce ultrices justo vitae blandit consequat.
+                </p>
+            </div>
+          </div>    
+        </section>
+
+
+      </div>
+      <!-- .container-fluid -->
+    </div>
+
+    <script src="js/jquery.min.js"></script>
+    <script src="js/parallax.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script>
+        $(function(){
+            $('.tabgroup > div').hide();
+            $('.tabgroup > div:first-of-type').show();  
+            $('.tabs a').click(function(e){
+              e.preventDefault();
+              var $this = $(this),
+                  tabgroup = '#'+$this.parents('.tabs').data('tabgroup'),
+                  others = $this.closest('li').siblings().children('a'),
+                  target = $this.attr('href');
+              others.removeClass('active');
+              $this.addClass('active');
+              $(tabgroup).children('div').hide();
+              $(target).show();
+
+              // Scroll to tab content (for mobile)
+              if($(window).width() < 992) {
+                  $('html, body').animate({
+                      scrollTop: $("#first-tab-group").offset().top
+                  }, 200);    
+              }              
+            })  
+        });
+        
+    </script>
+{% endblock %}
